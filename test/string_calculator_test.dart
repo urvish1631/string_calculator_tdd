@@ -16,5 +16,9 @@ void main() {
       expect(() => add('1,-2,3'),
           throwsA(predicate((e) => e.toString().contains('Negative numbers not allowed'))));
     });
+  
+    test('Handles newline as delimiter', () {
+      expect(add('1\n2,3'), 6);
+    });
   });
 }
