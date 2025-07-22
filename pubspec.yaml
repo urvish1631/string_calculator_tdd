@@ -1,0 +1,11 @@
+name: string-calculator
+description: A simple string calculator for demonstration purposes.
+version: 1.0.0+1
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
