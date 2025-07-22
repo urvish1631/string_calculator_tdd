@@ -6,5 +6,11 @@ void main() {
     test('Empty string returns 0', () {
       expect(add(''), 0);
     });
+
+    test('Handles single and multiple numbers', () {
+      expect(add('1,2,3'), 6);
+      expect(add('5'), 5);
+    });
+
   });
 }
