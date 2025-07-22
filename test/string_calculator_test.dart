@@ -11,6 +11,10 @@ void main() {
       expect(add('1,2,3'), 6);
       expect(add('5'), 5);
     });
-
+  
+    test('Throws error for negative numbers', () {
+      expect(() => add('1,-2,3'),
+          throwsA(predicate((e) => e.toString().contains('Negative numbers not allowed'))));
+    });
   });
 }
