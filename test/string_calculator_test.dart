@@ -20,5 +20,10 @@ void main() {
     test('Handles newline as delimiter', () {
       expect(add('1\n2,3'), 6);
     });
+
+    test('Supports custom single delimiter', () {
+      expect(add('//;\n1;%2'), 3);
+    });
+
   });
 }
