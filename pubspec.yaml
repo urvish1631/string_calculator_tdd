@@ -1,4 +1,4 @@
-name: string-calculator
+name: StringCalculator
 description: A simple string calculator for demonstration purposes.
 version: 1.0.0+1
 environment:
