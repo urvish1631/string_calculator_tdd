@@ -2,38 +2,30 @@ int add(String input) {
 
   if (input.isEmpty) return 0;
 
-  // Detect custom delimiters
-  final delimiterRegex = RegExp(r'^//(\[.*?\]|.)+\n');
-  List<String> delimiters = [',', '\n', ';'];
 
-  String numbersSection = input;
+  // Regex to find all integers
+  final matches = RegExp(r'-?\d+').allMatches(input);
 
-  if (delimiterRegex.hasMatch(input)) {
-    final delimiterPart = delimiterRegex.firstMatch(input)!.group(0)!;
-    numbersSection = input.substring(delimiterPart.length);
+  // If no integer present in the input, return 0
+  // This handles the case where the input is just a custom delimiter
+  // like "//[;]\n" or "//[***]\n"
+  if (matches.isEmpty) return 0;
 
-    // Extract custom delimiters
-    final customDelimiters = RegExp(r'\[(.*?)\]').allMatches(delimiterPart);
-    if (customDelimiters.isNotEmpty) {
-      delimiters = customDelimiters.map((m) => RegExp.escape(m.group(1)!)).toList();
-    } else {
-      delimiters = [RegExp.escape(delimiterPart.substring(2, delimiterPart.length - 1))];
+  final numbers = <int>[];
+  final negatives = <int>[];
+
+  for (final match in matches) {
+    final value = int.parse(match.group(0)!);
+
+    if (value < 0) {
+      negatives.add(value);
+    } else if (value <= 1000) {
+      numbers.add(value);
     }
+    // Ignore values > 1000
   }
 
-  // Split by delimiters
-  final delimiterPattern = RegExp(delimiters.join('|'));
-  final parts = numbersSection.split(delimiterPattern);
-
-  // Convert to integers
-  final numbers = parts
-      .where((p) => p.trim().isNotEmpty)
-      .map(int.parse)
-      .where((n) => n <= 1000)
-      .toList();
-
-  // Check for negatives
-  final negatives = numbers.where((n) => n < 0).toList();
+  // If there are any negative numbers, throw an exception with their values
   if (negatives.isNotEmpty) {
     throw Exception('Negative numbers not allowed: $negatives');
   }

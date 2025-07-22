@@ -6,5 +6,32 @@ void main() {
     test('Empty string returns 0', () {
       expect(add(''), 0);
     });
+
+    test('Handles single and multiple numbers', () {
+      expect(add('1,2,3'), 6);
+      expect(add('5'), 5);
+    });
+  
+    test('Throws error for negative numbers', () {
+      expect(() => add('1,-2,3'),
+          throwsA(predicate((e) => e.toString().contains('Negative numbers not allowed'))));
+    });
+  
+    test('Handles newline as delimiter', () {
+      expect(add('1\n2,3'), 6);
+    });
+
+    test('Supports custom single delimiter', () {
+      expect(add('//;\n1;%2'), 3);
+    });
+
+    test('Supports custom multiple delimiters', () {
+      expect(add('//[;][%]\n1;2%3'), 6);
+    });
+
+    test('Ignores numbers greater than 1000', () {
+      expect(add('2,1001'), 2);
+    });
+
   });
 }
