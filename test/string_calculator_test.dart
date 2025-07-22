@@ -99,4 +99,48 @@ void main() {
       expect(add('💥🔥🎉'), 0);
     });
   });
+
+
+  group('Leading zeros & embedded digits', () {
+    test('Leading zeros parsed', () {
+      expect(add('0007'), 7);
+    });
+
+    test('Mixed leading zeros', () {
+      expect(add('0007,0003'), 10);
+    });
+
+    test('Digits embedded in letters', () {
+      expect(add('a12b3c004'), 12 + 3 + 4);
+    });
+  });
+
+  group('Header digits edge behavior', () {
+    test('Digits in header counted? (documented behavior)', () {
+      expect(add('//123\n4'), 127);
+    });
+  });
+
+  group('Idempotency / multiple runs', () {
+    test('Calling add multiple times does not accumulate state', () {
+      expect(add('1,2,3'), 6);
+      expect(add('4,5'), 9);
+      expect(add(''), 0);
+    });
+  });
+
+  group('Stress', () {
+    test('Large input string', () {
+
+      final sb = StringBuffer();
+      int expected = 0;
+      for (int i = 1; i <= 500; i++) {
+        expected += i;
+        sb.write(i);
+        sb.write(i.isEven ? '???' : ',,');
+      }
+      final input = sb.toString();
+      expect(add(input), expected);
+    });
+  });
 }
