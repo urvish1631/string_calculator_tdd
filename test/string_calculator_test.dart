@@ -25,5 +25,13 @@ void main() {
       expect(add('//;\n1;%2'), 3);
     });
 
+    test('Supports custom multiple delimiters', () {
+      expect(add('//[;][%]\n1;2%3'), 6);
+    });
+
+    test('Ignores numbers greater than 1000', () {
+      expect(add('2,1001'), 2);
+    });
+
   });
 }
